@@ -1,15 +1,19 @@
 package com.hch.exam.board.Test;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import com.hch.exam.board.Article;
 
-public class JDBCInsertTest {
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class JDBCSelectTest {
   public static void main(String[] args) {
 
     Connection conn = null;
     PreparedStatement pstat = null;
+    ResultSet rs = null;
+
+    List<Article> articles = new ArrayList<>();
 
     try{
       Class.forName("com.mysql.jdbc.Driver");
@@ -19,16 +23,24 @@ public class JDBCInsertTest {
       conn = DriverManager.getConnection(url, "changho", "dhtwo19843"); // 여권이라 보면된다 이게 있으면 데이터베이스에 콘을 통해서 말할 수 있다.
       System.out.println("연결 성공!"); //접속
 
-      String sql = "INSERT INTO article";
-      sql += " SET regDate = NOW()"; // 한칸 뛰어주는거랑 , 처리 잘해야된다 안하면 오류난다.
-      sql += ", updateDate = NOW()";
-      sql += ", title = CONCAT(\"제목\", RAND())";
-      sql += ", `body` = CONCAT(\"내용\", RAND())";
+      String sql = "SELECT *";
+      sql += " FROM article"; // 한칸 뛰어주는거랑 , 처리 잘해야된다 안하면 오류난다.
+      sql += " ORDER BY id DESC";
 
       pstat = conn.prepareStatement(sql); //쿼리 전달
-      int affectedRows = pstat.executeUpdate(); //쿼리 실행 , 데이터를 추가(Insert), 삭제(Delete), 수정(Update)
+      rs = pstat.executeQuery(sql); //Select 문에서만 실행, 데이터베이스에서 데이터를 가져와 결과집합
 
-      System.out.println("affectedRows : " + affectedRows);
+      while(rs.next()){
+        int id = rs.getInt("id");
+        String regDate = rs.getString("regDate");
+        String updateDate = rs.getString("updateDate");
+        String title = rs.getString("title");
+        String body = rs.getString("body");
+
+        Article article = new Article(id, regDate, updateDate, title, body);
+        articles.add(article);
+      }
+
 
     }
     catch(ClassNotFoundException e){
@@ -39,11 +51,10 @@ public class JDBCInsertTest {
     }
     finally{ //마지막에 conn은 수동으로 꺼줘야된다. 걍 닥치고 이코드 다 외워라
       try{
-        if( conn != null && !conn.isClosed()){
-          conn.close();
+        if(rs != null && !rs.isClosed()){
+          rs.close();
         }
-      }
-      catch( SQLException e){
+      }catch (SQLException e){
         e.printStackTrace();
       }
       try{
@@ -51,6 +62,14 @@ public class JDBCInsertTest {
           pstat.close();
         }
       }catch (SQLException e){
+        e.printStackTrace();
+      }
+      try{
+        if( conn != null && !conn.isClosed()){
+          conn.close();
+        }
+      }
+      catch( SQLException e){
         e.printStackTrace();
       }
     }

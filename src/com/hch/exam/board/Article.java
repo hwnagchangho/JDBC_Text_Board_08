@@ -19,12 +19,6 @@ public class Article {
     this.body = body;
   }
 
-  public Article(int id, String body, String title){
-    this.id = id;
-    this.title = title;
-    this.body = body;
-  }
-
   public String toString(){
     return String.format("{id : %d, regDate : %s, updateDate : %s, title : \"%s\", body : \"%s\"}",
         id, regDate, updateDate, title, body);

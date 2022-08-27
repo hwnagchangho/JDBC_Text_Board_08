@@ -1,9 +1,6 @@
 package com.hch.exam.board;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,7 +12,6 @@ public class App {
 
     int articleLastId = 0;
 
-    List<Article> articles = new ArrayList<>();
 
     while(true){
 
@@ -29,7 +25,7 @@ public class App {
         System.out.printf("내용 : ");
         String body = sc.nextLine();
 
-        int id = ++articleLastId;
+//        int id = ++articleLastId; => 데이터베이스에서 AUTO_INCREMENT로 자동으로 올려주기때문에 필요가 없다.
 
         Connection conn = null;
         PreparedStatement pstat = null;
@@ -45,14 +41,13 @@ public class App {
           String sql = "INSERT INTO article";
           sql += " SET regDate = NOW()"; // 한칸 뛰어주는거랑 , 처리 잘해야된다 안하면 오류난다.
           sql += ", updateDate = NOW()";
-          sql += ", title = \"" + title + "\"";
+          sql += ", title = \"" + title + "\""; // DB에 저장해주므로 따로 List에 저장해서 가져올 필요가 없다.
           sql += ", `body` = \"" + body + "\"";
 
 
           pstat = conn.prepareStatement(sql); //쿼리 전달
-          int affectedRows = pstat.executeUpdate(); //쿼리 실행
+          pstat.executeUpdate(); //쿼리 실행
 
-          System.out.println("affectedRows : " + affectedRows);
 
         }
         catch(ClassNotFoundException e){
@@ -66,8 +61,70 @@ public class App {
             if( conn != null && !conn.isClosed()){
               conn.close();
             }
+          } catch( SQLException e){
+            e.printStackTrace();
           }
-          catch( SQLException e){
+          try{
+            if(pstat != null && !pstat.isClosed()){
+              pstat.close();
+            }
+          } catch (SQLException e){
+            e.printStackTrace();
+          }
+        }
+      }
+
+      else if(cmd.equals("/usr/article/list")){
+        System.out.println("==게시물 리스트==");
+        System.out.println("=================");
+        System.out.println(" 번호 / 제목 / 내용 ");
+
+        Connection conn = null;
+        PreparedStatement pstat = null;
+        ResultSet rs = null;
+
+        List<Article> articles = new ArrayList<>(); // DB에 저장하므로 따로 저장할필요가 없어서 LIST를 받아올때만 필요하기 때문에 if문안에다 작성해준다.
+
+        try{
+          Class.forName("com.mysql.jdbc.Driver");
+
+          String url = "jdbc:mysql://127.0.0.1:3306/text_board?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
+
+          conn = DriverManager.getConnection(url, "changho", "dhtwo19843"); // 여권이라 보면된다 이게 있으면 데이터베이스에 콘을 통해서 말할 수 있다.
+          System.out.println("연결 성공!"); //접속
+
+          String sql = "SELECT *";
+          sql += " FROM article"; // 한칸 뛰어주는거랑 , 처리 잘해야된다 안하면 오류난다.
+          sql += " ORDER BY id DESC";
+
+          pstat = conn.prepareStatement(sql); //쿼리 전달
+          rs = pstat.executeQuery(sql); //Select 문에서만 실행, 데이터베이스에서 데이터를 가져와 결과집합 //리턴받아서 데이터베이스 값을 가져오는거다.
+
+          while(rs.next()){
+            int id = rs.getInt("id");
+            String regDate = rs.getString("regDate");
+            String updateDate = rs.getString("updateDate");
+            String title = rs.getString("title");
+            String body = rs.getString("body");
+
+            Article article = new Article(id, regDate, updateDate, title, body);
+            articles.add(article);
+          }
+
+
+        }
+        catch(ClassNotFoundException e){
+          System.out.println("드라이버 로딩 실패");
+        }
+        catch(SQLException e){
+          System.out.println("에러: " + e);
+        }
+        finally{ //마지막에 conn은 수동으로 꺼줘야된다. 걍 닥치고 이코드 다 외워라
+          try{
+            if(rs != null && !rs.isClosed()){
+              rs.close();
+            }
+          }catch (SQLException e){
             e.printStackTrace();
           }
           try{
@@ -77,20 +134,15 @@ public class App {
           }catch (SQLException e){
             e.printStackTrace();
           }
+          try{
+            if( conn != null && !conn.isClosed()){
+              conn.close();
+            }
+          }
+          catch( SQLException e){
+            e.printStackTrace();
+          }
         }
-
-        Article article = new Article(id, title, body);
-
-        articles.add(article);
-
-        System.out.println("입력받은 객체 : " + article);
-        System.out.printf("%d번 게시물이 입력되었습니다.\n", article.id);
-      }
-
-      else if(cmd.equals("/usr/article/list")){
-        System.out.println("==게시물 리스트==");
-        System.out.println("=================");
-        System.out.println(" 번호 / 제목 / 내용 ");
 
         if(articles.size() == 0){
           System.out.println("게시물이 존재하지 않습니다.");

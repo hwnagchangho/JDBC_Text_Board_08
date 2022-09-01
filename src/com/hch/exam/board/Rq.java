@@ -1,6 +1,7 @@
 package com.hch.exam.board;
 
-import java.util.HashMap;
+import com.hch.exam.board.util.Util;
+
 import java.util.Map;
 
 public class Rq {
@@ -24,7 +25,7 @@ public class Rq {
 
   public int getIntParam(String paramsName, int defaultValue) {
 
-    if ( params.containsKey(paramsName) == false ) {
+    if ( params.containsKey(paramsName) == false || params.containsValue(paramsName) == false) {
       return defaultValue;
     }
 

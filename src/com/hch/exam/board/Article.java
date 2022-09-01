@@ -1,5 +1,7 @@
 package com.hch.exam.board;
 
+import java.util.Map;
+
 public class Article {
   int id;
 
@@ -19,6 +21,11 @@ public class Article {
     this.body = body;
   }
 
+  public Article(Map<String, Object> articleMap) {
+    this.id = (int) articleMap.get("id");
+    this.title = (String) articleMap.get("title");
+    this.body = (String) articleMap.get("body");
+  }
 
 
   public String toString(){

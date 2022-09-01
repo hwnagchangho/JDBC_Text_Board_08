@@ -5,10 +5,7 @@ import com.hch.exam.board.util.DBUtil;
 import com.hch.exam.board.util.SecSql;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class App {
 
@@ -74,7 +71,7 @@ public class App {
 
       int id = DBUtil.insert(conn, sql);
 
-      System.out.printf("%d번 게시물이 생성되었습니다.", id);
+      System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
 
    }
 
@@ -107,19 +104,84 @@ public class App {
 
       System.out.println("=================");
     }
+    else if(rq.getUrlPath().equals("/usr/article/detail")){
+      System.out.println("== 게시물 상세보기 ==");
+
+      int id = rq.getIntParam("id", 0);
+
+      if( id == 0 ){
+        System.out.println("id를 다시 입력해주세요");
+        return;
+      }
+
+      SecSql sql = new SecSql();
+
+      sql.append("SELECT *");
+      sql.append("FROM article");
+      sql.append("WHERE id = ?", id);
+
+      Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
+
+      if(articleMap.isEmpty()) {
+        System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
+        return;
+      }
+
+      Article article = new Article(articleMap);
+
+      System.out.printf("번호 : %d\n", article.id);
+      System.out.printf("등록날짜 : %s\n", article.regDate);
+      System.out.printf("수정날짜 : %s\n", article.updateDate);
+      System.out.printf("제목 : %s\n", article.title);
+      System.out.printf("내용 : %s\n", article.body);
+    }
+    else if(rq.getUrlPath().equals("/usr/article/delete")){
+      System.out.println("== 게시물 삭제 ==");
+      int id = rq.getIntParam("id", 0);
+
+      if( id == 0 ){
+        System.out.println("id를 다시 입력해주세요");
+        return;
+      }
+
+      SecSql sql = new SecSql();
+
+      sql.append("SELECT COUNT(*) AS cnt");
+      sql.append("FROM article");
+      sql.append("WHERE id = ?", id);
+      int articlesCount = DBUtil.selectRowIntValue(conn, sql);
+
+      if (articlesCount == 0) {
+        System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+        return;
+      }
+
+      sql.append("DELETE FROM article");
+      sql.append("WHERE id = ?", id);
+
+      DBUtil.delete(conn, sql);
+
+      System.out.printf("%d번 게시물이 삭제되었습니다.", id);
+
+    }
     else if(rq.getUrlPath().equals("/usr/article/modify")){
 
       int id = rq.getIntParam("id", 0);
 
       if( id == 0 ){
         System.out.println("id를 다시 입력해주세요");  // id=4 햇을때 4번게시물이 없는데 수정이 되는 오류가 있어서 getIntParam에서 고쳤는데 다른방법은없냐? 자바2에서처럼
-        return;
+        return; //이렇게 바꾸면 delete에서 안나온다.
       }
 
+
+      else{
+
+      }
       System.out.printf("새 제목 : ");
       String title = sc.nextLine();
       System.out.printf("새 내용 : ");
       String body = sc.nextLine();
+
 
       SecSql sql = new SecSql();
       sql.append("UPDATE article");

@@ -25,7 +25,7 @@ public class Rq {
 
   public int getIntParam(String paramsName, int defaultValue) {
 
-    if ( params.containsKey(paramsName) == false || params.containsValue(paramsName) == false) {
+    if ( params.containsKey(paramsName) == false) {
       return defaultValue;
     }
 

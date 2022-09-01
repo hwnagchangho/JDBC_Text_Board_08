@@ -52,7 +52,7 @@ public class SecSql {
       int parameterIndex = i + 1;
 
       if (data instanceof Integer) {
-        stmt.setInt(parameterIndex, (int) data);
+        stmt.setInt(parameterIndex, (int) data); // datas에 저장해서 데이터베이스로 보내주는거?
       } else if (data instanceof String) {
         stmt.setString(parameterIndex, (String) data);
       }

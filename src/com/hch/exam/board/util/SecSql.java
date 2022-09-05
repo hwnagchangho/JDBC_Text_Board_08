@@ -26,7 +26,7 @@ public class SecSql {
   }
 
   public SecSql append(Object... args) {    //(타입... 변수명 ): 일정하지 않은 개수의 파라미터 (Arbitrary Number of Arguments )
-    if (args.length > 0) {                  //    일정한 형의 변수를 여러 개  전달해야 할 때 사용한다.
+    if (args.length > 0) {                  //    일정한 형의 변수를 여러 개 전달해야 할 때 사용한다.
       String sqlBit = (String) args[0];     //    메소드 호출시, 일반 파라미터 처럼 넘기고
       sqlBuilder.append(sqlBit + " ");      //    메소드에서 받은 파라미터는 배열로 사용한다.
     } // 그럼 이거는 쿼리를 받아와서 저장해주고 String 클래스의 append()함수를이용해 이어붙혀서 쿼리를 작성해주는것???
@@ -35,7 +35,7 @@ public class SecSql {
       datas.add(args[i]); // sqlBuilder 와 datas에 왜 둘다저장?
     }
 
-    return this; // 여기서 this는 무엇을 가르키나?
+    return this; // this 는 완성된 쿼리문
   }
 
   public PreparedStatement getPreparedStatement(Connection dbConn) throws SQLException {
@@ -62,7 +62,7 @@ public class SecSql {
   }
 
   public String getFormat() {
-    return sqlBuilder.toString(); // 왜 sqlBuilder를 붙힌거지
+    return sqlBuilder.toString();
   }
 
   public static SecSql from(String sql) {

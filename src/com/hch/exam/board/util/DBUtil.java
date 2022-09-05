@@ -1,7 +1,7 @@
 package com.hch.exam.board.util;
 
 import com.hch.exam.board.exception.SQLErrorException;
-import com.hch.exam.board.util.SecSql;
+
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DBUtil {
-  public static Map<String, Object> selectRow(Connection dbConn, SecSql sql) { //conn을 계속 넘겨주는건 DB에 말하기위함? 로그인?
+  public static Map<String, Object> selectRow(Connection dbConn, SecSql sql) {
     List<Map<String, Object>> rows = selectRows(dbConn, sql);
 
     if (rows.size() == 0) {

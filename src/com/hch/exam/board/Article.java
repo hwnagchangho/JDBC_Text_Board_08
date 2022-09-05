@@ -3,15 +3,15 @@ package com.hch.exam.board;
 import java.util.Map;
 
 public class Article {
-  int id;
+  public int id;
 
-  String regDate;
+  public String regDate;
 
-  String updateDate;
+  public String updateDate;
 
-  String title;
+  public String title;
 
-  String body;
+  public String body;
 
   public Article(int id, String regDate, String updateDate, String title, String body){
     this.id = id;

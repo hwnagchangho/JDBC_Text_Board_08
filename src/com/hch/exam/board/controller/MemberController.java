@@ -6,18 +6,8 @@ import com.hch.exam.board.util.SecSql;
 import java.sql.Connection;
 import java.util.Scanner;
 
-public class MemberController {
-  private Connection conn;
-  private Scanner sc;
-  public void setConn(Connection conn) {
-    this.conn = conn;
-  }
-
-  public void setScanner(Scanner sc) {
-    this.sc = sc;
-  }
-
-  public static void join(Connection conn, Scanner sc) {
+public class MemberController extends Controller{
+  public void join() {
     String loginId;
     String loginPw;
     String loginPwConfirm;

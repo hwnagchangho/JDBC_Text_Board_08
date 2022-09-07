@@ -55,23 +55,18 @@ public class App {
   }
 
   private void action(Rq rq, Connection conn, Scanner sc, String cmd) {
-    MemberController memberController = new MemberController();
-    memberController.setConn(conn);
-    memberController.setScanner(sc);
+    ArticleController articleController = new ArticleController(conn, rq, sc);
 
-    ArticleController articleController = new ArticleController();
-    articleController.setConn(conn);
-    articleController.setScanner(sc);
-    articleController.setRq(rq);
+    MemberController memberController = new MemberController(conn, rq, sc);
 
     if (rq.getUrlPath().equals("/usr/member/join")) {
       memberController.join();
     } else if (rq.getUrlPath().equals("/usr/article/write")) {
       articleController.add();
     } else if (rq.getUrlPath().equals("/usr/article/list")) {
-      articleController.list();
+      articleController.showList();
     } else if (rq.getUrlPath().equals("/usr/article/detail")) {
-      articleController.detail(rq);
+      articleController.showDetail(rq);
     } else if (rq.getUrlPath().equals("/usr/article/delete")) {
       articleController.delete(rq);
     } else if (rq.getUrlPath().equals("/usr/article/modify")) {

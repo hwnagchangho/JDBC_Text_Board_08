@@ -22,7 +22,7 @@ public class SecSql {
   }
 
   public boolean isInsert() {
-    return getFormat().startsWith("INSERT");
+    return getFormat().startsWith("INSERT"); // getFromat에 저장되있는 쿼리문이 insert로 시작하니?
   }
 
   public SecSql append(Object... args) {    //(타입... 변수명 ): 일정하지 않은 개수의 파라미터 (Arbitrary Number of Arguments )
@@ -41,8 +41,8 @@ public class SecSql {
   public PreparedStatement getPreparedStatement(Connection dbConn) throws SQLException {
     PreparedStatement stmt = null;  //    https://cocodo.tistory.com/11 PreparedStatement 사용법? 데이터 전달하는 객체?
 
-    if (isInsert()) {
-      stmt = dbConn.prepareStatement(getFormat(), Statement.RETURN_GENERATED_KEYS);
+    if (isInsert()) { // 이게 참이면 밑에서 autoincrement로 생성된 키값을 반환 아니면 그냥 format반환
+      stmt = dbConn.prepareStatement(getFormat(), Statement.RETURN_GENERATED_KEYS); // RETURN_GENERATED_KEYS : DB상에 AUTO_INCREMENT로 인해 자동으로 생성되어진 key(=id)를 가져오는 쿼리
     } else {
       stmt = dbConn.prepareStatement(getFormat());
     }
@@ -52,9 +52,9 @@ public class SecSql {
       int parameterIndex = i + 1;
 
       if (data instanceof Integer) {
-        stmt.setInt(parameterIndex, (int) data); // datas에 저장해서 데이터베이스로 보내주는거?
+        stmt.setInt(parameterIndex, (int) data);
       } else if (data instanceof String) {
-        stmt.setString(parameterIndex, (String) data);
+        stmt.setString(parameterIndex, (String) data); //반환받은 키값에 data저장
       }
     }
 

@@ -1,5 +1,6 @@
 package com.hch.exam.board.controller;
 
+import com.hch.exam.board.container.Container;
 import com.hch.exam.board.dto.Article;
 import com.hch.exam.board.Rq;
 import com.hch.exam.board.service.ArticleService;
@@ -11,9 +12,8 @@ import java.util.Scanner;
 public class ArticleController extends Controller{
   ArticleService articleService;
 
-  public ArticleController(Connection conn, Rq rq, Scanner sc) {
-    super(rq, sc);
-    articleService = new ArticleService(conn);
+  public ArticleController() {
+    articleService = Container.articleService;
   }
 
   public void add() {

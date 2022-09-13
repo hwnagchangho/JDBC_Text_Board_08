@@ -1,6 +1,7 @@
 package com.hch.exam.board.controller;
 
 import com.hch.exam.board.Rq;
+import com.hch.exam.board.container.Container;
 import com.hch.exam.board.dto.Member;
 import com.hch.exam.board.service.MemberService;
 
@@ -11,9 +12,8 @@ import java.util.Scanner;
 public class MemberController extends Controller{
   private MemberService memberService;
 
-  public MemberController(Connection conn, Rq rq, Scanner sc){
-    super(rq, sc);
-    memberService = new MemberService(conn);
+  public MemberController(){
+    memberService = Container.memberService;
   }
   public void join() {
     String loginId;
@@ -94,7 +94,7 @@ public class MemberController extends Controller{
 
     while(true){
       System.out.printf("로그인 아이디:");
-      loginId = sc.next().trim();
+      loginId = sc.nextLine().trim();
 
       if(loginId.length() == 0){
         System.out.println("아이디를 입력해주세요.");
@@ -123,7 +123,7 @@ public class MemberController extends Controller{
       }
 
       System.out.printf("로그인 비밀전호:");
-      loginPw = sc.next().trim();
+      loginPw = sc.nextLine().trim();
 
       if(loginPw.length() == 0){
         System.out.println("비밀번호를 입력해주세요.");

@@ -1,10 +1,8 @@
 package com.hch.exam.board;
 
-import com.hch.exam.board.Test.JDBCSelectTest;
+import com.hch.exam.board.container.Container;
 import com.hch.exam.board.controller.ArticleController;
 import com.hch.exam.board.controller.MemberController;
-import com.hch.exam.board.util.DBUtil;
-import com.hch.exam.board.util.SecSql;
 
 import java.sql.*;
 import java.util.*;
@@ -13,11 +11,14 @@ public class App {
 
   public void run(){
 
-    Scanner sc = Container.sc;
+    Container.scanner = new Scanner(System.in);
+
+    Container.init();
+
     while(true){
 
       System.out.printf("명령어)");
-      String cmd = sc.nextLine().trim();
+      String cmd = Container.scanner.nextLine().trim();
 
       Rq rq = new Rq(cmd);
 
@@ -29,7 +30,8 @@ public class App {
 
         conn = DriverManager.getConnection(url, "changho", "dhtwo19843"); // 여권이라 보면된다 이게 있으면 데이터베이스에 콘을 통해서 말할 수 있다.
 
-        action(rq, conn, sc, cmd);
+        Container.conn = conn;
+        action(rq, cmd);
 
       } catch (ClassNotFoundException e) {
         System.err.println("예외 : MySQL 드라이버 클래스가 없습니다.");
@@ -51,13 +53,13 @@ public class App {
         }
       }
     }
-    sc.close();
+    Container.scanner.close();
   }
 
-  private void action(Rq rq, Connection conn, Scanner sc, String cmd) {
-    ArticleController articleController = new ArticleController(conn, rq, sc);
+  private void action(Rq rq, String cmd) {
+    ArticleController articleController = new ArticleController();
 
-    MemberController memberController = new MemberController(conn, rq, sc);
+    MemberController memberController = new MemberController();
 
     if (rq.getUrlPath().equals("/usr/member/join")) {
       memberController.join();

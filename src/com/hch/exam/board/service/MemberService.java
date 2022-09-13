@@ -1,6 +1,7 @@
 package com.hch.exam.board.service;
 
 import com.hch.exam.board.Rq;
+import com.hch.exam.board.container.Container;
 import com.hch.exam.board.dao.MemberDao;
 import com.hch.exam.board.dto.Member;
 
@@ -9,8 +10,8 @@ import java.util.Scanner;
 
 public class MemberService {
   MemberDao memberDao;
-  public MemberService(Connection conn){
-    memberDao = new MemberDao(conn);
+  public MemberService(){
+    memberDao = Container.memberDao;
   }
 
   public boolean isLoginedDup(String loginId) {

@@ -28,7 +28,7 @@ public class App {
         String url = "jdbc:mysql://127.0.0.1:3306/text_board1?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
 
         conn = DriverManager.getConnection(url, "changho", "dhtwo19843"); // 여권이라 보면된다 이게 있으면 데이터베이스에 콘을 통해서 말할 수 있다.
-        System.out.println("연결 성공!"); //접속
+
         action(rq, conn, sc, cmd);
 
       } catch (ClassNotFoundException e) {
@@ -61,6 +61,8 @@ public class App {
 
     if (rq.getUrlPath().equals("/usr/member/join")) {
       memberController.join();
+    } else if (rq.getUrlPath().equals("/usr/member/login")) {
+      memberController.login();
     } else if (rq.getUrlPath().equals("/usr/article/write")) {
       articleController.add();
     } else if (rq.getUrlPath().equals("/usr/article/list")) {

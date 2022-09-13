@@ -1,6 +1,6 @@
 package com.hch.exam.board.service;
 
-import com.hch.exam.board.Article;
+import com.hch.exam.board.dto.Article;
 import com.hch.exam.board.dao.ArticleDao;
 
 import java.sql.Connection;

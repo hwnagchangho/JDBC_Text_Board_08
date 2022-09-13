@@ -1,9 +1,9 @@
 package com.hch.exam.board.controller;
 
 import com.hch.exam.board.Rq;
+import com.hch.exam.board.dto.Member;
 import com.hch.exam.board.service.MemberService;
-import com.hch.exam.board.util.DBUtil;
-import com.hch.exam.board.util.SecSql;
+
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -85,5 +85,60 @@ public class MemberController extends Controller{
     int id = memberService.join(loginId, loginPw, name);
 
     System.out.printf("%s님 환영합니다.\n", name);
+  }
+
+  public void login() {
+    String loginId;
+    String loginPw;
+    System.out.println(" == 로그인 == ");
+
+    while(true){
+      System.out.printf("로그인 아이디:");
+      loginId = sc.next().trim();
+
+      if(loginId.length() == 0){
+        System.out.println("아이디를 입력해주세요.");
+        continue;
+      }
+
+      boolean isLoginedDup = memberService.isLoginedDup(loginId);
+
+      if(isLoginedDup == false) {
+        System.out.printf("%s(은)는 존재하지 않는 로그인 아이디입니다.\n", loginId);
+        continue;
+      }
+
+      break;
+    }
+
+    Member member = memberService.getMemberByLoginId(loginId);
+
+    int tryMaxCount = 3;
+    int tryCount = 0;
+
+    while(true){
+      if( tryCount >= tryMaxCount){
+        System.out.println("비밀번호를 확인 후 다시 이용해주세요.");
+        break;
+      }
+
+      System.out.printf("로그인 비밀전호:");
+      loginPw = sc.next().trim();
+
+      if(loginPw.length() == 0){
+        System.out.println("비밀번호를 입력해주세요.");
+        continue;
+      }
+
+      if(member.loginPw.equals(loginPw) == false) {
+        tryCount++;
+        System.out.println("비밀번호가 일치하지 않습니다.");
+        continue;
+      }
+
+      System.out.printf("%s님 환영합니다.\n", member.name);
+      break;
+    }
+
   }
 }

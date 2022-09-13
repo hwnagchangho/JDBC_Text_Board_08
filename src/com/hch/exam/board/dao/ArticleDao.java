@@ -1,6 +1,6 @@
 package com.hch.exam.board.dao;
 
-import com.hch.exam.board.Article;
+import com.hch.exam.board.dto.Article;
 import com.hch.exam.board.util.DBUtil;
 import com.hch.exam.board.util.SecSql;
 

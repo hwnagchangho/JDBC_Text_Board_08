@@ -1,4 +1,4 @@
-package com.hch.exam.board;
+package com.hch.exam.board.dto;
 
 import java.util.Map;
 

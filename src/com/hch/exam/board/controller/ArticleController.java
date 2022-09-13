@@ -1,15 +1,11 @@
 package com.hch.exam.board.controller;
 
-import com.hch.exam.board.Article;
+import com.hch.exam.board.dto.Article;
 import com.hch.exam.board.Rq;
 import com.hch.exam.board.service.ArticleService;
-import com.hch.exam.board.util.DBUtil;
-import com.hch.exam.board.util.SecSql;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class ArticleController extends Controller{

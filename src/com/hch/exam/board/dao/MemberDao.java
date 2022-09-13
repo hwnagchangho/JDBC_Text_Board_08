@@ -1,10 +1,13 @@
 package com.hch.exam.board.dao;
 
 import com.hch.exam.board.Rq;
+import com.hch.exam.board.dto.Article;
+import com.hch.exam.board.dto.Member;
 import com.hch.exam.board.util.DBUtil;
 import com.hch.exam.board.util.SecSql;
 
 import java.sql.Connection;
+import java.util.Map;
 import java.util.Scanner;
 
 public class MemberDao {
@@ -38,5 +41,21 @@ public class MemberDao {
     int id = DBUtil.insert(conn, sql);
 
     return id;
+  }
+
+  public Member getMemberByLoginId(String loginId) {
+    SecSql sql = new SecSql();
+
+    sql.append("SELECT *");
+    sql.append("FROM member");
+    sql.append("WHERE loginId = ?", loginId);
+
+    Map<String, Object> memberMap = DBUtil.selectRow(conn, sql);
+
+    if(memberMap.isEmpty()){
+      return null;
+    }
+    return new Member(memberMap);
+
   }
 }

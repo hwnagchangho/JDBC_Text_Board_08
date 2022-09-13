@@ -1,6 +1,6 @@
 package com.hch.exam.board.Test;
 
-import com.hch.exam.board.Article;
+import com.hch.exam.board.dto.Article;
 
 import java.sql.*;
 import java.util.ArrayList;

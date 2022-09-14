@@ -5,19 +5,19 @@ import com.hch.exam.board.dto.Article;
 import com.hch.exam.board.util.DBUtil;
 import com.hch.exam.board.util.SecSql;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class ArticleDao {
 
-  public int add(String title, String body) {
+  public int add(int memberId, String title, String body) {
     SecSql sql = new SecSql();
 
     sql.append("INSERT INTO article");
     sql.append("SET regDate = NOW()"); // 여기서 띄어쓰기 안해도되는 이유가 sql append()에 그렇게만들어놔서?
     sql.append(", updateDate = NOW()");
+    sql.append(", memberId = ?", memberId);
     sql.append(", title = ?", title); // 이렇게 쓸수 있는 이유는?
     sql.append(", `body` = ?", body);
 

@@ -22,6 +22,8 @@ public class ArticleController extends Controller{
       return;
     }
 
+    int memberId = Container.session.loginedMemberId;
+
     System.out.println("== 게시물 등록 ==");
     System.out.printf("제목 : ");
     String title = sc.nextLine();
@@ -30,7 +32,7 @@ public class ArticleController extends Controller{
 
 //        int id = ++articleLastId; => 데이터베이스에서 AUTO_INCREMENT로 자동으로 올려주기때문에 필요가 없다.
 
-    int id = articleService.add(title, body);
+    int id = articleService.add(memberId, title, body);
 
     System.out.printf("%d번 게시물이 생성되었습니다.\n", id);
 

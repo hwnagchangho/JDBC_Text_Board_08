@@ -61,7 +61,9 @@ public class App {
 
     MemberController memberController = new MemberController();
 
-    if (rq.getUrlPath().equals("/usr/member/join")) {
+    if (rq.getUrlPath().equals("/usr/member/whoami")) {
+      memberController.whoami();
+    } else if (rq.getUrlPath().equals("/usr/member/join")) {
       memberController.join();
     } else if (rq.getUrlPath().equals("/usr/member/login")) {
       memberController.login();

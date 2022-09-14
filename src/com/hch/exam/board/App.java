@@ -67,6 +67,8 @@ public class App {
       memberController.join();
     } else if (rq.getUrlPath().equals("/usr/member/login")) {
       memberController.login();
+    } else if (rq.getUrlPath().equals("/usr/member/logout")) {
+      memberController.logout();
     } else if (rq.getUrlPath().equals("/usr/article/write")) {
       articleController.add();
     } else if (rq.getUrlPath().equals("/usr/article/list")) {

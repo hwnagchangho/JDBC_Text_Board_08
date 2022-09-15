@@ -68,6 +68,7 @@ public class ArticleController extends Controller{
       return;
     }
 
+    articleService.hitIncrease(id);
     Article article = articleService.getArticleById(id);
 
     if(article == null) {
@@ -76,8 +77,10 @@ public class ArticleController extends Controller{
     }
 
     System.out.printf("번호 : %d\n", article.id);
+    System.out.printf("조회수 : %d\n", article.hit);
     System.out.printf("등록날짜 : %s\n", article.regDate);
     System.out.printf("수정날짜 : %s\n", article.updateDate);
+    System.out.printf("작성자 : %s\n", article.extra__writer);
     System.out.printf("제목 : %s\n", article.title);
     System.out.printf("내용 : %s\n", article.body);
   }

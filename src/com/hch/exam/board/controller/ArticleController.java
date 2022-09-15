@@ -45,12 +45,13 @@ public class ArticleController extends Controller{
 
     List<Article> articles = articleService.getArticles();
 
+
     if(articles.size() == 0){
       System.out.println("게시물이 존재하지 않습니다.");
     }
 
     for( Article article : articles ){
-      System.out.printf("%d / %s / %s\n", article.id, article.title, article.body);
+      System.out.printf("%d / %s / %s / %s\n", article.id, article.title, article.extra__writer, article.body);
     }
 
 

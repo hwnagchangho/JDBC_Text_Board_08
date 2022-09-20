@@ -51,7 +51,7 @@ public class ArticleController extends Controller{
     }
 
     for( Article article : articles ){
-      System.out.printf("%d / %s / %s / %s\n", article.id, article.title, article.extra__writer, article.body);
+      System.out.printf("%d / %s / %s / %s\n", article.id, article.title, article.memberId, article.extra__writer, article.body);
     }
 
 
@@ -77,7 +77,7 @@ public class ArticleController extends Controller{
     }
 
     System.out.printf("번호 : %d\n", article.id);
-    System.out.printf("조회수 : %d\n", article.hit);
+    System.out.printf("조회수 : %s\n", article.hit);
     System.out.printf("등록날짜 : %s\n", article.regDate);
     System.out.printf("수정날짜 : %s\n", article.updateDate);
     System.out.printf("작성자 : %s\n", article.extra__writer);
@@ -96,6 +96,17 @@ public class ArticleController extends Controller{
 
     if( id == 0 ){
       System.out.println("id를 다시 입력해주세요");
+      return;
+    }
+
+    Article article = articleService.getArticleById(id);
+
+    if(article == null){
+      System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+      return;
+    }
+    if(article.memberId != Container.session.loginedMemberId){
+      System.out.println("권한이 없습니다.");
       return;
     }
 
@@ -123,6 +134,17 @@ public class ArticleController extends Controller{
     if( id == 0 ){
       System.out.println("id를 다시 입력해주세요");  // id=4 햇을때 4번게시물이 없는데 수정이 되는 오류가 있어서 getIntParam에서 고쳤는데 다른방법은없냐? 자바2에서처럼
       return; //이렇게 바꾸면 delete에서 안나온다.
+    }
+
+    Article article = articleService.getArticleById(id);
+
+    if(article == null){
+      System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+      return;
+    }
+    if(article.memberId != Container.session.loginedMemberId){
+      System.out.println("권한이 없습니다.");
+      return;
     }
 
     boolean articleExists = articleService.articleExists(id);
